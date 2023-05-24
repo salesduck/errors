@@ -1,0 +1,18 @@
+{
+  "name": "@salesduck/errors",
+  "version": "1.0.0",
+  "description": "Extended errors",
+  "main": "index.js",
+  "repository": "git@github.com:salesduck/errors.git",
+  "author": "dyrkow <webworkdeveloper@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "@dyrkow/editor-config": "^1.0.0",
+    "@dyrkow/eslint-config": "^1.0.2",
+    "@dyrkow/eslint-config-typescript": "^1.0.1",
+    "@dyrkow/prettier-config": "^1.0.0",
+    "eslint": "^8.41.0",
+    "prettier": "^2.8.8"
+  }
+}
