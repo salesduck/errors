@@ -1,18 +1,33 @@
 {
-  "name": "@salesduck/errors",
-  "version": "1.0.0",
-  "description": "Extended errors",
-  "main": "index.js",
-  "repository": "git@github.com:salesduck/errors.git",
-  "author": "dyrkow <webworkdeveloper@gmail.com>",
-  "license": "MIT",
-  "private": false,
-  "devDependencies": {
-    "@dyrkow/editor-config": "^1.0.0",
-    "@dyrkow/eslint-config": "^1.0.2",
-    "@dyrkow/eslint-config-typescript": "^1.0.1",
-    "@dyrkow/prettier-config": "^1.0.0",
-    "eslint": "^8.41.0",
-    "prettier": "^2.8.8"
-  }
+    "name": "@salesduck/errors",
+    "version": "1.0.0",
+    "description": "Extended errors",
+    "main": "index.js",
+    "repository": "git@github.com:salesduck/errors.git",
+    "author": "dyrkow <webworkdeveloper@gmail.com>",
+    "license": "MIT",
+    "private": false,
+    "scripts": {
+        "clean": "rm -rf build && rm -rf ./tsconfig.build.tsbuildinfo",
+        "build": "yarn clean && tsc --project ./tsconfig.build.json && tscpaths -p ./tsconfig.build.json -s ./src -o ./build",
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand"
+    },
+    "devDependencies": {
+        "@dyrkow/editor-config": "^1.0.0",
+        "@dyrkow/eslint-config": "^1.0.2",
+        "@dyrkow/eslint-config-typescript": "^1.0.1",
+        "@dyrkow/prettier-config": "^1.0.0",
+        "@types/jest": "^26.0.23",
+        "eslint": "^8.41.0",
+        "jest": "^26.6.3",
+        "prettier": "^2.8.8",
+        "ts-jest": "^26.5.5",
+        "tscpaths": "^0.0.9",
+        "typescript": "^4.9.4"
+    },
+    "dependencies": {
+        "modern-errors": "^6.0.0"
+    }
 }
