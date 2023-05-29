@@ -33,7 +33,10 @@ describe('AggregateError', () => {
             expect(parsed).toEqual({
                 code: 'AGGREGATION',
                 message: 'Aggregate Error',
-                errors: [{ message: 'User hello', code: 'UNKNOWN' }, { message: 'Age invalid', code: 'UNKNOWN' }, {}, {}]
+                errors: [
+                    { message: 'User hello', code: 'UNKNOWN' },
+                    { message: 'Age invalid', code: 'UNKNOWN' }
+                ]
             });
         });
     });
