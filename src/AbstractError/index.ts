@@ -7,6 +7,9 @@ export type ErrorOptions = {
     cause?: Error;
 };
 
+/**
+ * Define base logic for every error
+ */
 export abstract class AbstractError extends Error {
 
     /**
@@ -24,7 +27,7 @@ export abstract class AbstractError extends Error {
      */
     public readonly message: string;
 
-    constructor(options: ErrorOptions) {
+    constructor(options?: ErrorOptions) {
         const { message = 'Unknown Error', code = ERROR_UNKNOWN } = options || {};
 
         super(message);

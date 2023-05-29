@@ -1,5 +1,8 @@
 import { AbstractError, ErrorOptions } from '@project/AbstractError';
 
+/**
+ * Not specified error in application
+ */
 export class ApplicationError extends AbstractError {
     constructor(options?: ErrorOptions) {
         const { message = 'Application Error', code, cause, ...meta } = options || {};

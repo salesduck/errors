@@ -1,31 +1,18 @@
-import { ERROR_UNKNOWN } from '@project/AbstractError';
+import { AbstractError } from '@project/AbstractError';
 import { ApplicationError } from '.';
 
 describe('ApplicationError', () => {
     describe('constructor ::', () => {
-        it('set default parameters', () => {
+        it('set defaults', () => {
             const expected = new ApplicationError();
 
             expect(expected.message).toBe('Application Error');
-            expect(expected.code).toBe(ERROR_UNKNOWN);
         });
 
-        it('set code', () => {
-            const expected = new ApplicationError({ code: 'USER_ERROR' });
-
-            expect(expected.code).toBe('USER_ERROR');
-        });
-
-        it('set name', () => {
+        it('extends AbstractError', () => {
             const expected = new ApplicationError();
 
-            expect(expected.name).toBe('ApplicationError');
-        });
-
-        it('add stack', () => {
-            const expected = new ApplicationError();
-
-            expect(expected.stack.includes('ApplicationError')).toBeTruthy();
+            expect(expected instanceof AbstractError).toBeTruthy();
         });
 
         it('add caused error to stack', () => {
@@ -53,11 +40,5 @@ describe('ApplicationError', () => {
 
             expect(expected.stack.includes('users')).toBeTruthy();
         });
-    });
-
-    it('toString ::', () => {
-        const expected = new ApplicationError().toString();
-
-        expect(expected.includes('ApplicationError')).toBeTruthy();
     });
 });
