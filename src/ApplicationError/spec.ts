@@ -1,4 +1,5 @@
-import { ApplicationError, ERROR_UNKNOWN } from '.';
+import { ERROR_UNKNOWN } from '@project/AbstractError';
+import { ApplicationError } from '.';
 
 describe('ApplicationError', () => {
     describe('constructor ::', () => {
