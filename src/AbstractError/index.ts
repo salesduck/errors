@@ -27,12 +27,18 @@ export abstract class AbstractError extends Error {
      */
     public readonly message: string;
 
+    /**
+     * Caused error instance
+     */
+    public readonly cause: Error;
+
     constructor(options?: ErrorOptions) {
-        const { message = 'Unknown Error', code = ERROR_UNKNOWN } = options || {};
+        const { message = 'Unknown Error', code = ERROR_UNKNOWN, cause } = options || {};
 
         super(message);
 
         this.code = code;
+        this.cause = cause;
 
         // Set prototype for stack trace
         Object.setPrototypeOf(this, new.target.prototype);
@@ -57,6 +63,16 @@ export abstract class AbstractError extends Error {
             writable: false,
             configurable: false
         });
+
+        // Remove cause from serialization
+        if (cause) {
+            Object.defineProperty(this, 'cause', {
+                value: cause,
+                enumerable: false,
+                writable: true,
+                configurable: true
+            });
+        }
     }
 
     /**

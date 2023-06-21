@@ -20,7 +20,7 @@ describe('ApplicationError', () => {
                 cause: new TypeError('Hello')
             });
 
-            expect(expected.stack.includes('Hello')).toBeTruthy();
+            expect(expected.cause.message).toBe('Hello');
         });
 
         it('add context', () => {
@@ -32,13 +32,18 @@ describe('ApplicationError', () => {
         });
 
         it('add context in nested errors', () => {
+            const id = 'users';
+
             const expected = new ApplicationError({
+                message: 'Hello',
                 cause: new ApplicationError({
-                    id: 'users'
+                    message: 'Something wrong',
+                    id
                 })
             });
 
-            expect(expected.stack.includes('users')).toBeTruthy();
+            expect(expected.stack.includes('Hello')).toBeTruthy();
+            expect(expected.cause.stack.includes(id)).toBeTruthy();
         });
     });
 });
