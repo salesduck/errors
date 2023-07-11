@@ -1,15 +1,13 @@
 export const ERROR_UNKNOWN = 'UNKNOWN';
 
-export type ErrorOptions = {
-    [key: string]: unknown;
+export type ErrorMetadata = Record<string, unknown>;
+
+export type ErrorOptions = ErrorMetadata & {
     message?: string;
     code?: string;
     cause?: Error;
 };
 
-/**
- * Define base logic for every error
- */
 export abstract class AbstractError extends Error {
 
     /**
@@ -33,22 +31,25 @@ export abstract class AbstractError extends Error {
     public readonly cause: Error;
 
     constructor(options?: ErrorOptions) {
-        const { message = 'Unknown Error', code = ERROR_UNKNOWN, cause } = options || {};
+        const { message = 'Unknown error', code = ERROR_UNKNOWN, cause, ...meta } = options || {};
 
         super(message);
 
         this.code = code;
         this.cause = cause;
 
-        // Set prototype for stack trace
         Object.setPrototypeOf(this, new.target.prototype);
 
-        // Define name from constructor
+        // Make name not enumerable
         Object.defineProperty(this, 'name', {
             value: new.target.name,
-            enumerable: false,
-            writable: false,
-            configurable: false
+            enumerable: false
+        });
+
+        // Make message enumerable
+        Object.defineProperty(this, 'message', {
+            value: message,
+            enumerable: true
         });
 
         // Try remove constructor from stack
@@ -56,28 +57,25 @@ export abstract class AbstractError extends Error {
             Error.captureStackTrace(this, this.constructor);
         }
 
-        // Make message enumerable
-        Object.defineProperty(this, 'message', {
-            value: this.message,
-            enumerable: true,
-            writable: false,
-            configurable: false
-        });
+        AbstractError.captureMetadata(this, meta);
 
-        // Remove cause from serialization
-        if (cause) {
-            Object.defineProperty(this, 'cause', {
-                value: cause,
-                enumerable: false,
-                writable: true,
-                configurable: true
-            });
+        // Polyfill
+        if (cause && !this.stack.includes('cause')) {
+            this.stack = `${this.stack}\n  cause: ${cause.stack}`;
         }
     }
 
     /**
-     * Represents error as string value
+     * Add metadata to .stack property on a target object
      */
+    protected static captureMetadata(target: Error, meta: ErrorMetadata): void {
+        const entries = Object.entries(meta || {});
+
+        if (entries.length) {
+            target.stack = `${target.stack || ''}\n    by ${entries.map(([key, value]) => `${key} = ${JSON.stringify(value)}`).join('\n    by ')}`;
+        }
+    }
+
     public toString(): string {
         return this.stack;
     }

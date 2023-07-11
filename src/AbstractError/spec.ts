@@ -7,7 +7,7 @@ describe('AbstractError', () => {
         it('set defaults', () => {
             const expected = new SomeError();
 
-            expect(expected.message).toBe('Unknown Error');
+            expect(expected.message).toBe('Unknown error');
             expect(expected.code).toBe(ERROR_UNKNOWN);
         });
 
@@ -33,6 +33,34 @@ describe('AbstractError', () => {
             const expected = new SomeError();
 
             expect(expected.stack.includes('AbstractError/spec.ts')).toBeTruthy();
+        });
+
+        it('add cause', () => {
+            const expected = new SomeError({ cause: new SomeError() });
+
+            expect(expected.cause instanceof Error).toBeTruthy();
+        });
+
+        it('capture metadata', () => {
+            const expected = new SomeError({ age: 18, cause: new SomeError({ name: 'user' }) });
+
+            expect(expected.stack.includes('age = 18')).toBeTruthy();
+            expect(expected.cause.stack.includes('name = "user"')).toBeTruthy();
+        });
+
+        it('add cause to stack', () => {
+            const expected = new SomeError({ message: 'Hello', cause: new SomeError({ message: 'World' }) });
+
+            expect(expected.stack.includes('World')).toBeTruthy();
+            expect(expected.stack.includes('Hello')).toBeTruthy();
+        });
+    });
+
+    describe('stringify', () => {
+        it('message and code will be stringify', () => {
+            const expected = new SomeError({ message: 'Hello' });
+
+            expect(JSON.stringify(expected)).toBe('{"message":"Hello","code":"UNKNOWN"}');
         });
     });
 
