@@ -36,13 +36,18 @@ export abstract class AbstractError extends Error {
         super(message);
 
         this.code = code;
-        this.cause = cause;
 
         Object.setPrototypeOf(this, new.target.prototype);
 
         // Make name not enumerable
         Object.defineProperty(this, 'name', {
             value: new.target.name,
+            enumerable: false
+        });
+
+        // Make cause not enumerable
+        Object.defineProperty(this, 'cause', {
+            value: cause,
             enumerable: false
         });
 
